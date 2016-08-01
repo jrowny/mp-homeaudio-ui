@@ -1,25 +1,14 @@
-# react-redux-material_ui-boilerplate
-A boilerplate for React + Redux + Material UI + ES6 syntax applications. This boilerplate includes following tools and frameworks.
+#
+This is a web frontend/UI for the Monoprice 6 Zone Home Audio Controller and Amplifier, product # 10761
 
-* [React](https://facebook.github.io/react/)
-* [Redux](http://rackt.org/redux/index.html)
-* [Material UI](http://material-ui.com/#/)
-* [webpack](https://webpack.github.io/)
-* [Babel](https://babeljs.io/)
-* [ESLint](http://eslint.org/)
+It relies on having something (in my case, a RaspberryPi) connected to the controller via serial and running this JSON API: https://github.com/jnewland/mpr-6zhmaut-api
 
+Based on react-redux-material_ui-boilerplate / https://github.com/takanabe/react-redux-material_ui-boilerplate.git
+
+_warning_ this project is a bit rough, made in one evening, but it seems to work well.
 
 # Usage
-## Preparation
-```bash
-$ git clone https://github.com/takanabe/react-redux-material_ui-boilerplate.git
-$ mv react-redux-material_ui-boilerplate [YOUR_APPNAME]
-$ cd [YOUR_APPNAME]
-$ rm -rf .git
-$ git init
-$ git add -A
-$ git commit -m "Initial commit with boilerplate"
-```
+Modify the `HOST` const in actions/app to the URL of the mpr-6zhmaut-api JSON API
 
 ## Package installation
 ```bash
@@ -27,19 +16,16 @@ $ npm install
 ```
 
 ## Use development server
-For development server, webpack-dev-server is reasonable. It monitors update files and rebuild them automatically. Since webpack cli command is registerd in `package.json` in this project, just type following command to run webpack-dev-server.
-
 ```bash
 $ npm start
 ```
 
-Becareful! the webpack-dev-server rebuild files in `src` automatically but the bundled files are just placed on its memory. Build manually by allowing next section(Build assets), if you want need the bundled files.
-
-
-## Build assets
-To put compiled files into `static` directory, type the following command.
+## Building
+The easiest way to get this running is to compile files into `static` directory with the following command.
 
 ```bash
 $ npm run build
 ```
+
+And then use that within `express.static`. You might get a CORS violation if you don't run it on the same port # as the JSON API which you can resolve by adding CORS to the JSON API or proxying the API calls. I ended up just forking the JSON API and adding `express.static` with the build folder here.
 

@@ -1,43 +1,19 @@
 import React, { PropTypes, Component } from 'react';
-import TodoTextInput from './TodoTextInput';
 
-import mui, {AppBar, Styles} from 'material-ui';
-import MyRawTheme from '../src/material_ui_raw_theme_file';
-
-const defaultStyle = {
-  marginLeft: 20
-};
+import {AppBar} from 'material-ui';
 
 class Header extends Component {
-  static get childContextTypes() {
-    return { muiTheme: React.PropTypes.object };
-  }
-
-  getChildContext(){
-    return {  muiTheme: Styles.ThemeManager.getMuiTheme(MyRawTheme)};
-  }
-
-  handleSave(text) {
-    if (text.length !== 0) {
-      this.props.addTodo(text);
-    }
-  }
 
   render() {
     return (
       <header className="header">
-          <AppBar title="React + Redux + Material UI Boilerplate" />
-          <h1 style={defaultStyle} >todos</h1>
-          <TodoTextInput newTodo
-                         onSave={this.handleSave.bind(this)}
-                         placeholder="What needs to be done?" />
+          <AppBar title="HomeAudio Control"  showMenuIconButton={false}/>
       </header>
     );
   }
 }
 
 Header.propTypes = {
-  addTodo: PropTypes.func.isRequired
 };
 
 export default Header;

@@ -3,15 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
-import * as TodoActions from '../actions/todos';
+import * as AppActions from '../actions/app';
 
 class App extends Component {
   render() {
-    const { todos, actions } = this.props;
+    const { actions } = this.props;
     return (
       <div>
-        <Header addTodo={actions.addTodo} />
-        <MainSection todos={todos} actions={actions} />
+        <Header />
+        <MainSection zones={this.props.zones} error={this.props.error} actions={actions} />
       </div>
     );
   }
@@ -19,19 +19,25 @@ class App extends Component {
 
 
 App.propTypes = {
-  todos: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  zones: PropTypes.array.isRequired,
+  error: PropTypes.string
+};
+
+App.defaultProps = {
+  error: ''
 };
 
 function mapStateToProps(state) {
   return {
-    todos: state.todos
+    zones: state.app.zones,
+    error: state.app.error
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(TodoActions, dispatch)
+    actions: bindActionCreators(AppActions, dispatch)
   };
 }
 

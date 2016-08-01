@@ -1,93 +1,73 @@
 import React, { Component, PropTypes } from 'react';
-import TodoItem from './TodoItem';
-import Footer from './Footer';
-import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters';
-import { Checkbox, List } from 'material-ui';
+import Zone from './Zone';
+import { Dialog, FlatButton } from 'material-ui';
 
 const defaultStyle = {
-  width: 300,
-  marginLeft: 20
-};
-
-const TODO_FILTERS = {
-  [SHOW_ALL]: () => true,
-  [SHOW_ACTIVE]: todo => !todo.completed,
-  [SHOW_COMPLETED]: todo => todo.completed
+  marginTop: '20px',
+  marginLeft: '20px',
+  marginRight: '20px'
 };
 
 class MainSection extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { filter: SHOW_ALL };
+    this.renderZones = this.renderZones.bind(this);
   }
 
-  handleClearCompleted() {
-    const atLeastOneCompleted = this.props.todos.some(todo => todo.completed);
-    if (atLeastOneCompleted) {
-      this.props.actions.clearCompleted();
-    }
-  }
-
-  handleShow(filter) {
-    this.setState({ filter });
-  }
-
-  renderToggleAll(completedCount) {
-    const { todos, actions } = this.props;
-    if (todos.length > 0) {
+  renderZones(zones) {
+    return zones.map(function(zone){
       return (
-        <Checkbox className="toggle-all"
-                  style={{marginBottom: 10}}
-                  label="Toggle All"
-                  defaultChecked={completedCount === todos.length}
-                  onCheck={actions.completeAll} />
-      );
-    }
+        <Zone
+          key={zone.zone}
+          zone={zone}
+          actions={this.props.actions}
+        />);
+    }.bind(this));
   }
 
-  renderFooter(completedCount) {
-    const { todos } = this.props;
-    const { filter } = this.state;
-    const activeCount = todos.length - completedCount;
+  handleClose() {
+    this.props.actions.setError('');
+  }
 
-    if (todos.length) {
-      return (
-        <Footer completedCount={completedCount}
-                activeCount={activeCount}
-                filter={filter}
-                onClearCompleted={this.handleClearCompleted.bind(this)}
-                onShow={this.handleShow.bind(this)} />
-      );
-    }
+  handleRefresh() {
+    location.reload();
   }
 
   render() {
-    const { todos, actions } = this.props;
-    const { filter } = this.state;
-
-    const filteredTodos = todos.filter(TODO_FILTERS[filter]);
-    const completedCount = todos.reduce((count, todo) =>
-      todo.completed ? count + 1 : count,
-      0
-    );
-
+    const zones = this.renderZones(this.props.zones);
+    const actions = [
+      <FlatButton
+        label="Close"
+        primary={true}
+        onTouchTap={this.handleClose.bind(this)}
+      />,
+      <FlatButton
+        label="Refresh"
+        primary={false}
+        onTouchTap={this.handleRefresh.bind(this)}
+      />
+    ];
     return (
       <section className="main" style={defaultStyle}>
-        {this.renderToggleAll(completedCount)}
-        <List className="todo-list">
-          {filteredTodos.map(todo =>
-            <TodoItem key={todo.id} todo={todo} {...actions} />
-          )}
-        </List>
-        {this.renderFooter(completedCount)}
+        {zones}
+        <Dialog
+          title="Oh no!"
+          actions={actions}
+          modal={true}
+          open={this.props.error!==''}
+          onRequestClose={this.handleClose.bind(this)}
+        >
+          {this.props.error}
+        </Dialog>
       </section>
     );
   }
 }
 
 MainSection.propTypes = {
-  todos: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  zones: PropTypes.array.isRequired,
+  error: PropTypes.string
 };
 
 export default MainSection;

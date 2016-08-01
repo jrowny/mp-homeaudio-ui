@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import injectTapEventPlugin from "react-tap-event-plugin";
-import { createStore } from 'redux';
+import { loadFromApi } from '../actions/app';
 import { Provider } from 'react-redux';
 
 import App from '../containers/App';
@@ -24,3 +24,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+
+store.dispatch(loadFromApi());
