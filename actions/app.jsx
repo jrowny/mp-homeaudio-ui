@@ -15,12 +15,12 @@ export function loadFromApi() {
       return result.json()
     }).then(function(zones) {
       //Filter out any weird zones that aren't 11-16
+      //TODO: support expanded zone set
       dispatch(load(zones.filter(function(zone){
         const z = parseInt(zone.zone);
         return (z >= 11 && z <= 16);
       })));
     }).catch(function() {
-      console.log("wat");
       dispatch(setError(`Can't communicate with HomeAudio System, is it turned off?`));
     });
   }
@@ -53,7 +53,6 @@ export function setAttribute(zone, attribute, value) {
 }
 
 export function setError(error) {
-  console.log("wat", error);
   return {
     type: types.SET_ERROR,
     error
