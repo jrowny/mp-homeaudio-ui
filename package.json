@@ -1,5 +1,5 @@
 {
-  "name": "monoprice-multizone-ui",
+  "name": "mp-homeaudio-ui",
   "version": "1.0.0",
   "description": "A UI for the Monoprice #10761 6 Zone Home Audi Controller",
   "main": "index.js",
