@@ -1,5 +1,5 @@
 #
-*warning* this project is a bit rough, made in one evening, but it seems to work well.
+**warning** this project is a bit rough, made in one evening, but it seems to work well.
 
 This is a web frontend/UI for the Monoprice 6 Zone Home Audio Controller and Amplifier, product # 10761
 
